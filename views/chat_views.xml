@@ -1,0 +1,30 @@
+<odoo>
+  <data>
+
+    <record id="view_kanban_conversation_management" model="ir.ui.view">
+        <field name="name">conversation.management.kanban</field>
+        <field name="model">conversation.management.conversation</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong><field name="title"/></strong>
+                            <div><field name="user_name"/></div>
+                            <div><field name="conversation_status"/></div>
+                            <div><field name="user_email"/></div>
+                            <div>
+                                <button name="action_open_conversation" type="object" class="btn btn-primary">
+                                    Open Conversation
+                                </button>
+                            </div>
+                            <div><field name="conversation_date"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+  </data>
+</odoo>

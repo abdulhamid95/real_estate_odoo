@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_property_rental_contract">
+    <t t-name="real_state.report_property_rental_contract">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+
+                    <h2>Rental Contract</h2>
+
+                    <!-- معلومات المستأجر -->
+                    <h3>Tenant Information</h3>
+                    <p><strong>Name:</strong> <t t-esc="doc.tenant_id.name"/></p>
+                    <p><strong>Email:</strong> <t t-esc="doc.tenant_id.email"/></p>
+                    <p><strong>Phone:</strong> <t t-esc="doc.tenant_id.phone"/></p>
+                    <p><strong>National ID:</strong> <t t-esc="doc.tenant_id.national_id"/></p>
+                    <p><strong>Birthday Date:</strong> <t t-esc="doc.tenant_id.birthday_date"/></p>
+
+                    <!-- معلومات العقار -->
+                    <h3>Property Information</h3>
+                    <p><strong>Property Name:</strong> <t t-esc="doc.name"/></p>
+                    <p><strong>Type:</strong> <t t-esc="doc.property_type"/></p>
+                    <p><strong>Status:</strong> <t t-esc="doc.status"/></p>
+                    <p><strong>Address:</strong> <t t-esc="doc.address"/></p>
+                    <p><strong>Country:</strong> <t t-esc="doc.country"/></p>
+                    <p><strong>Area (sqm):</strong> <t t-esc="doc.area"/></p>
+                    <p><strong>Rooms:</strong> <t t-esc="doc.number_of_rooms"/></p>
+                    <p><strong>Bathrooms:</strong> <t t-esc="doc.number_of_bathrooms"/></p>
+                    <p><strong>Furnishing:</strong> <t t-esc="doc.furnishing"/></p>
+
+                    <!-- معلومات الإيجار -->
+                    <h3>Rental Information</h3>
+                    <p><strong>Rented From:</strong> <t t-esc="doc.rented_from"/></p>
+                    <p><strong>Rented To:</strong> <t t-esc="doc.rented_to"/></p>
+                    <p><strong>Price:</strong> <t t-esc="doc.price"/> <t t-esc="doc.currency_id.name"/></p>
+
+                    <!-- التوقيع -->
+                    <h3>Signatures</h3>
+                    <table style="width: 100%; margin-top: 50px;">
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Tenant Signature:</strong>
+                                <div style="border-bottom: 1px solid #000; width: 200px;"></div>
+                            </td>
+                            <td style="text-align: right;">
+                                <strong>Owner Signature:</strong>
+                                <div style="border-bottom: 1px solid #000; width: 200px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+
+            </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

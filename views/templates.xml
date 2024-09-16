@@ -1,0 +1,419 @@
+<odoo>
+    <data>
+        <template id="property_list_template" name="Property List">
+            <t t-call="website.layout">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <form id="propertyFilterForm" method="GET" action="/properties">
+                                <fieldset class="filter-group">
+                                    <legend>Price Filters</legend>
+                                    <div class="form-group">
+                                        <label for="min_price">Min Price</label>
+                                        <input type="number" id="min_price" name="min_price" class="form-control"
+                                               placeholder="Minimum Price" t-att-value="min_price"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="max_price">Max Price</label>
+                                        <input type="number" id="max_price" name="max_price" class="form-control"
+                                               placeholder="Maximum Price" t-att-value="max_price"/>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="filter-group">
+                                    <legend>Property Details</legend>
+                                    <div class="form-group">
+                                        <label for="property_type">Property Type</label>
+                                        <select id="property_type" name="property_type" class="form-control">
+                                            <option value="">All</option>
+                                            <option t-att-value="'apartment'"
+                                                    t-att-selected="property_type == 'apartment'">Apartment
+                                            </option>
+                                            <option t-att-value="'villa'" t-att-selected="property_type == 'villa'">
+                                                Villa
+                                            </option>
+                                            <option t-att-value="'office'" t-att-selected="property_type == 'office'">
+                                                Office
+                                            </option>
+                                            <option t-att-value="'shop'" t-att-selected="property_type == 'shop'">Shop
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="property_status">Property Status</label>
+                                        <select id="property_status" name="property_status" class="form-control">
+                                            <option value="">All</option>
+                                            <option t-att-value="'for_rent'"
+                                                    t-att-selected="property_status == 'for_rent'">For Rent
+                                            </option>
+                                            <option t-att-value="'for_sale'"
+                                                    t-att-selected="property_status == 'for_sale'">For Sale
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="furnishing">Furnishing</label>
+                                        <select id="furnishing" name="furnishing" class="form-control">
+                                            <option value="">All</option>
+                                            <option t-att-value="'furnished'"
+                                                    t-att-selected="furnishing == 'furnished'">Furnished
+                                            </option>
+                                            <option t-att-value="'unfurnished'"
+                                                    t-att-selected="furnishing == 'unfurnished'">Unfurnished
+                                            </option>
+                                            <option t-att-value="'partly_furnished'"
+                                                    t-att-selected="furnishing == 'partly_furnished'">Partly Furnished
+                                            </option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="filter-group">
+                                    <legend>Size and Floor</legend>
+                                    <div class="form-group">
+                                        <label for="min_area">Min Area (sqm)</label>
+                                        <input type="number" id="min_area" name="min_area" class="form-control"
+                                               placeholder="Minimum Area" t-att-value="min_area"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="max_area">Max Area (sqm)</label>
+                                        <input type="number" id="max_area" name="max_area" class="form-control"
+                                               placeholder="Maximum Area" t-att-value="max_area"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="number_of_rooms">Number of Rooms</label>
+                                        <input type="number" id="number_of_rooms" name="number_of_rooms"
+                                               class="form-control" placeholder="Number of Rooms"
+                                               t-att-value="number_of_rooms"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="floor_number">Floor Number</label>
+                                        <input type="number" id="floor_number" name="floor_number" class="form-control"
+                                               placeholder="Floor Number" t-att-value="floor_number"/>
+                                    </div>
+                                </fieldset>
+
+                                <button type="submit" class="btn btn-primary mt-3 mb-3">Apply Filters</button>
+                            </form>
+
+                            <script>
+                                document.getElementById('propertyFilterForm').addEventListener('submit', function(e) {
+                                // الحصول على جميع الحقول المدخلة
+                                var inputs = this.querySelectorAll('input, select');
+
+                                // إزالة الحقول الفارغة
+                                inputs.forEach(function(input) {
+                                if (!input.value) {
+                                input.removeAttribute('name');
+                                }
+                                });
+                                });
+                            </script>
+
+
+                        </div>
+                        <div class="col-md-9 h-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h1 class="text-center">Properties List</h1>
+                                <div>
+                                    <button id="btn-card-view" class="btn btn-outline-primary"
+                                            t-attf-href="?view_type=card">
+                                        <i class="fa fa-th-large"></i>
+                                    </button>
+                                    <button id="btn-list-view" class="btn btn-outline-primary"
+                                            t-attf-href="?view_type=list">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                    <button id="btn-map-view" class="btn btn-outline-primary"
+                                            t-attf-href="?view_type=map">
+                                        <i class="fa fa-map"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+
+                            <!-- Container for both views -->
+                            <div id="property-container">
+                                <!-- Card View -->
+                                <div id="card-view" class="row">
+                                    <t t-foreach="properties" t-as="property">
+                                        <div class="col-md-4 mb-3 property-item">
+                                            <div class="card">
+                                                <a t-att-href="'/property/%s' % property.id">
+                                                    <img t-att-src="'/web/image/property.management.property/%s/image' % property.id"
+                                                         class="card-img-top" alt="Property Image"/>
+                                                </a>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">
+                                                        <t t-esc="property.name"/>
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        <t t-esc="property.price"/>
+                                                        <t t-esc="property.currency_id.symbol"/>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                <!-- List View (Table) -->
+                                <div id="list-view" class="d-none">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Currency</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="properties" t-as="property">
+                                                <tr>
+                                                    <td>
+                                                        <a t-att-href="'/property/%s' % property.id">
+                                                            <img t-att-src="'/web/image/property.management.property/%s/image' % property.id"
+                                                                 style="width: 100px; height: auto;"
+                                                                 alt="Property Image"/>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="property.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="property.price"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="property.currency_id.symbol"/>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-primary btn-sm"
+                                                           t-att-href="'/property/%s' % property.id">View
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="map" class="d-none" style="height: 500px;"></div>
+                                <input type="hidden" id="property-data" t-att-value="json.dumps([{
+                                    'lat': property.latitude,
+                                    'lng': property.longitude,
+                                    'name': property.name,
+                                    'url': '/property/' + str(property.id)
+                                } for property in properties])"/>
+                                <input type="hidden" name="view_type" t-attf-value="view_type or 'map'"/>
+                            </div>
+
+                            <!-- Navigation at the bottom and centered -->
+                            <nav aria-label="Page navigation" id="pagination" class="d-flex justify-content-center mt-4">
+                                <ul class="pagination">
+                                    <!-- Previous button -->
+                                    <t t-if="page == 1">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Previous</a>
+                                        </li>
+                                    </t>
+                                    <t t-else="">
+                                        <li class="page-item">
+                                            <a class="page-link" t-att-href="'/properties?page=' + str(page - 1)">
+                                                Previous
+                                            </a>
+                                        </li>
+                                    </t>
+
+                                    <!-- Page numbers -->
+                                    <t t-foreach="range(1, total_pages + 1)" t-as="p">
+                                        <t t-if="page == p">
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">
+                                                    <t t-esc="p"/>
+                                                </a>
+                                            </li>
+                                        </t>
+                                        <t t-else="">
+                                            <li class="page-item">
+                                                <a class="page-link" t-att-href="'/properties?page=' + str(p)">
+                                                    <t t-esc="p"/>
+                                                </a>
+                                            </li>
+                                        </t>
+                                    </t>
+
+                                    <!-- Next button -->
+                                    <t t-if="page == total_pages">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </t>
+                                    <t t-else="">
+                                        <li class="page-item">
+                                            <a class="page-link" t-att-href="'/properties?page=' + str(page + 1)">Next
+                                            </a>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </nav>
+                        </div>
+
+                        <!-- Pagination -->
+
+
+                    </div>
+                </div>
+                <!-- تضمين مكتبة Leaflet -->
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                <script t-att-src="'/real_state/static/src/js/property_map.js'"></script>
+                <style>
+                    .property-item {
+                    width: 100%;
+                    }
+
+                    #card-view .property-item {
+                    width: 33.33%;
+                    }
+
+                    #list-view img {
+                    width: 100px;
+                    height: auto;
+                    object-fit: cover;
+                    }
+
+                    #list-view td {
+                    vertical-align: middle;
+                    }
+                </style>
+            </t>
+        </template>
+        <template id="property_info_template" name="Property Info">
+            <t t-call="website.layout">
+                <div class="container">
+                    <div id="propertyCarousel" class="carousel slide mt-5" data-bs-ride="carousel">
+
+                        <div class="carousel-inner">
+                            <t t-set="is_first" t-value="True"/>
+                            <t t-foreach="property.attachment_ids" t-as="img" t-key="img.id">
+                                <div t-attf-class="carousel-item #{'active' if is_first else ''}">
+                                    <img t-att-src="'/web/image/' + str(img.id)" class="d-block w-100"
+                                         alt="Property Image" style="object-fit: cover; height: 500px;"/>
+                                </div>
+                                <t t-set="is_first" t-value="False"/>
+                            </t>
+                        </div>
+                        <!-- Previous button -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <!-- Next button -->
+                        <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+
+                    <div class="property-details container my-5">
+                        <h2 class="text-center mb-4">
+                            <t t-esc="property.name"/>
+                        </h2>
+
+                        <!-- Property Description -->
+                        <p class="text-muted text-center">
+                            <t t-esc="property.description"/>
+                        </p>
+
+                        <!-- Property Details Table -->
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <table class="table table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Property Type</th>
+                                            <td>
+                                                <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Area (sqm)</th>
+                                            <td>
+                                                <t t-esc="property.area"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Number of Rooms</th>
+                                            <td>
+                                                <t t-esc="property.number_of_rooms"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Number of Bathrooms</th>
+                                            <td>
+                                                <t t-esc="property.number_of_bathrooms"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Floor Number</th>
+                                            <td>
+                                                <t t-esc="property.floor_number"/>
+                                                /
+                                                <t t-esc="property.total_floors"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Status</th>
+                                            <td>
+                                                <t t-esc="dict(property._fields['status'].selection).get(property.status)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Furnishing</th>
+                                            <td>
+                                                <t t-esc="dict(property._fields['furnishing'].selection).get(property.furnishing)"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Amenities</th>
+                                            <td>
+                                                <t t-esc="property.amenities"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Price</th>
+                                            <td>
+                                                <t t-esc="property.price"/>
+                                                <t t-esc="property.currency_id.symbol"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Country</th>
+                                            <td>
+                                                <t t-esc="property.country"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Address</th>
+                                            <td>
+                                                <t t-esc="property.address"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="property_management_menu" name="Property Management"/>
+    <menuitem id="property_menu" name="Properties" parent="property_management_menu"/>
+    <menuitem id="property_type_menu" name="Property Type" parent="property_management_menu"/>
+    <menuitem id="ending_soon_property_menu" name="Ending Soon Properties" parent="property_management_menu" action="ending_soon_properties"/>
+
+
+
+    <menuitem id="apartment_property_menu" name="Apartment Properties" parent="property_type_menu" action="apartments_properties"/>
+    <menuitem id="villas_property_menu" name="Villas Properties" parent="property_type_menu" action="villas_properties"/>
+    <menuitem id="office_property_menu" name="Office Properties" parent="property_type_menu" action="office_properties"/>
+    <menuitem id="shop_property_menu" name="Shop Properties" parent="property_type_menu" action="shop_properties"/>
+
+    <record id="action_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">property.management.property</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+    </record>
+
+
+
+    <menuitem id="property_menu_action" name="Properties" parent="property_menu" action="action_property"/>
+    <menuitem id="rented_property_menu" name="Rented Properties" parent="property_menu" action="rented_properties"/>
+    <menuitem id="available_property_menu" name="Available Properties" parent="property_menu" action="available_properties"/>
+
+    <menuitem id="chat_management_menu" name="Chat Management"/>
+    <menuitem id="chat_menu" name="Properties" parent="chat_management_menu"/>
+
+
+    <record id="action_chat" model="ir.actions.act_window">
+        <field name="name">Chat</field>
+        <field name="res_model">conversation.management.conversation</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+    </record>
+
+    <menuitem id="chat_menu_action" name="Chat" parent="chat_menu" action="action_chat"/>
+</odoo>

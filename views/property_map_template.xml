@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="Property Management Assets" inherit_id="web.assets_common">
+        <xpath expr="." position="inside">
+            <!-- تضمين مكتبة Leaflet -->
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+
+            <!-- تضمين ملف جافاسكربت الخاص بك -->
+            <script type="text/javascript" src="/real_state/static/src/js/property_map_view.js"></script>
+        </xpath>
+    </template>
+</odoo>

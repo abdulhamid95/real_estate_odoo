@@ -1,0 +1,12 @@
+<odoo>
+  <data>
+          <template id="notification_button_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/real_state/static/src/scss/notification_button.scss"/>
+            <script type="text/javascript" src="/real_state/static/src/js/notification_button.js"/>
+        </xpath>
+    </template>
+
+
+  </data>
+</odoo>

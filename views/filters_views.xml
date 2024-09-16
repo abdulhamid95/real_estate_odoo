@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+        <record id="view_property_search" model="ir.ui.view">
+            <field name="name">property.management.property.search</field>
+            <field name="model">property.management.property</field>
+            <field name="arch" type="xml">
+                <search string="Property Search">
+                    <field name="name"/>
+                    <field name="status"/>
+                    <filter string="Rented Properties" name="filter_rented_properties" domain="[('status', '=', 'rented')]"/>
+                    <filter string="Available Properties" name="filter_available_properties" domain="[('status', '=', 'available')]"/>
+                    <filter string="Ending Soon" name="filter_ending_soon" domain="[('rented_to', '&lt;', (context_today() + datetime.timedelta(days=30)))]"/>
+                    <filter string="Apartments" name="filter_apartments" domain="[('property_type', '=', 'apartment')]"/>
+                    <filter string="Villas" name="filter_villas" domain="[('property_type', '=', 'villa')]"/>
+                    <filter string="Offices" name="filter_offices" domain="[('property_type', '=', 'office')]"/>
+                    <filter string="Shops" name="filter_shops" domain="[('property_type', '=', 'shop')]"/>
+                </search>
+            </field>
+        </record>
+        <record id="rented_properties" model="ir.actions.act_window">
+          <field name="name">Rented Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_rented_properties':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any rented properties
+            </p>
+          </field>
+        </record>
+        <record id="available_properties" model="ir.actions.act_window">
+          <field name="name">Available Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_available_properties':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Available properties
+            </p>
+          </field>
+        </record>
+       <record id="ending_soon_properties" model="ir.actions.act_window">
+          <field name="name">Ending Soon Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_ending_soon':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Ending soon properties
+            </p>
+          </field>
+        </record>
+           <record id="apartments_properties" model="ir.actions.act_window">
+          <field name="name">Apartments Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_apartments':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Apartments properties
+            </p>
+          </field>
+        </record>
+        <record id="villas_properties" model="ir.actions.act_window">
+          <field name="name">Villas Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_villas':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Villas properties
+            </p>
+          </field>
+        </record>
+        <record id="office_properties" model="ir.actions.act_window">
+          <field name="name">Office Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_offices':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Office properties
+            </p>
+          </field>
+        </record>
+        <record id="shop_properties" model="ir.actions.act_window">
+          <field name="name">Shop Properties</field>
+          <field name="res_model">property.management.property</field>
+          <field name="view_mode">tree,kanban,form</field>
+          <field name="context">{
+              'search_default_filter_shops':1
+              }</field>
+          <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    You don't have any Shop properties
+            </p>
+          </field>
+        </record>
+</odoo>

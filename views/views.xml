@@ -1,0 +1,126 @@
+<odoo>
+  <data>
+      <record id="view_property_form" model="ir.ui.view">
+      <field name="name">property.form</field>
+      <field name="model">property.management.property</field>
+      <field name="arch" type="xml">
+        <form string="Property">
+          <sheet>
+            <group>
+              <group>
+
+                <field name="name"/>
+                <field name="property_type"/>
+                <field name="property_status"/>
+                <field name="owner_id"/>
+              </group>
+              <group>
+                <field name="latitude"/>
+                <field name="longitude"/>
+                <field name="country" />
+                <field name="address" />
+                <field name="area"/>
+                <field name="number_of_rooms"/>
+                <field name="number_of_bathrooms"/>
+                <field name="floor_number"/>
+                <field name="total_floors"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="status"/>
+                <field name="furnishing"/>
+                <field name="amenities"/>
+                <field name="price"/>
+                <field name="currency_id"/>
+              </group>
+              <group>
+                <field name="rented_from"/>
+                <field name="rented_to"/>
+              </group>
+            </group>
+            <field name="image" widget="image"/>
+            <notebook>
+              <page name="description" string="Description">
+                <field name="description"/>
+              </page>
+              <page name="attachments" string="Attachments">
+                <field name="attachment_ids" widget="many2many_binary"/>
+              </page>
+              <page name="tenant_info" string="Tenant Info">
+                <field name="tenant_id"/>
+                <field name="conversation_ids">
+                  <kanban>
+                    <templates>
+                      <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                          <strong><field name="title"/></strong>
+                          <div><field name="user_name"/></div>
+                          <div><field name="conversation_date"/></div>
+                          <div><field name="conversation_status"/></div>
+                          <button name="action_open_conversation" type="object" class="btn btn-primary">Open Conversation</button>
+                        </div>
+                      </t>
+                    </templates>
+                  </kanban>
+                </field>
+              </page>
+              <page name="map_view" string="Map">
+                <div t-attf-class="map-container" style="height:400px;">
+                  <div id="property_map" style="height: 100%;"></div>
+                </div>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+        <record id="view_property_kanban" model="ir.ui.view">
+      <field name="name">property.management.kanban</field>
+      <field name="model">property.management.property</field>
+      <field name="arch" type="xml">
+        <kanban default_group_by="stage_id">
+          <field name="name"/>
+          <field name="stage_id"/>
+          <field name="status"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_card">
+                <a t-att-href="'/web#id=' + record.id.raw_value + '&amp;cids=1&amp;menu_id=212&amp;action=262&amp;model=property.management.property&amp;view_type=form'">
+                  <strong><field name="name"/></strong>
+                  <div>Status: <field name="status"/></div>
+                  <div>Type: <field name="property_type"/></div>
+                  <div>Price: <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"/></div>
+                </a>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <record id="view_property_tree" model="ir.ui.view">
+      <field name="name">property.management.tree</field>
+      <field name="model">property.management.property</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="property_type"/>
+          <field name="status"/>
+          <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+          <field name="area"/>
+          <field name="number_of_rooms"/>
+        </tree>
+      </field>
+    </record>
+  <record id="view_property_graph" model="ir.ui.view">
+      <field name="name">property.management.graph</field>
+      <field name="model">property.management.property</field>
+      <field name="arch" type="xml">
+          <graph string="Property Analysis" type="bar">
+              <field name="price" type="measure"/>
+              <field name="property_type" type="dimension"/>
+          </graph>
+      </field>
+  </record>
+  </data>
+</odoo>
